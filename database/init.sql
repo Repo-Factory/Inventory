@@ -7,7 +7,7 @@ CREATE TABLE inventory (
   sell_price  DECIMAL(10, 2)
 );
 
-insert into employees (name, buy_price, sell_price) values 
-  (tostitos, 15, 18), 
-  (crepas, 12, 25), 
-  (mamut, 2, 3);
+insert into inventory (name, buy_price, sell_price) values 
+  ('tostitos', 15, 18), 
+  ('crepas', 12, 25), 
+  ('mamut', 2, 3);

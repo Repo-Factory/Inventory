@@ -8,10 +8,12 @@ services:
     build:
       context: ./
       target: database_stage
+    ports:
+      - 5001:5432
     environment:
-      - POSTGRES_USER=docker_postgress
-      - POSTGRES_PASSWORD=docker_postgress
-      - POSTGRES_DB=docker_postgress
+      - POSTGRES_USER=docker_postgres
+      - POSTGRES_PASSWORD=docker_postgres
+      - POSTGRES_DB=docker_postgres
     volumes:
       - ./db-data/:/var/lib/postgresql/data/
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
