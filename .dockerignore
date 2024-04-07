@@ -1,0 +1,23 @@
+# DOCKER
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# OS
+.DS_Store
+
+# NPM
+backend/node_modules
+backend/package-lock.json
+frontend/node_modules
+frontend/package-lock.json
+
+# APP
+frontend/dist
+backend/src/bin
+backend/src/obj
+
+# DATABASE
+database/*
+!database/.gitkeep
+

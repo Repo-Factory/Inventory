@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+
+  database:
+    image: postgres
+    container_name: database
+    build:
+      context: ./
+      target: database_stage
+    environment:
+      - POSTGRES_USER=docker_postgress
+      - POSTGRES_PASSWORD=docker_postgress
+      - POSTGRES_DB=docker_postgress
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - docker_network
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./
+      target: frontend_stage
+    ports:
+      - 3000:3000
+    working_dir: /home
+    depends_on: [ database ]
+    restart: "no"
+
+  backend:
+    container_name: backend
+    build:
+      context: ./
+      target: backend_stage
+    ports:
+      - 8080:8080
+    working_dir: /home
+    restart: unless-stopped
+    depends_on: [ frontend ]
+    networks:
+      - docker_network
+      
+  server:
+    container_name: server
+    build:
+      context: ./
+      target: nginx_stage
+    restart: unless-stopped
+    ports:
+      - 80:80
+    depends_on: [ "backend" ]
+    networks:
+      - docker_network
+
+networks:
+  docker_network:
