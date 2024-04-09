@@ -16,7 +16,7 @@ namespace Logic
         {
             if (items.Count == 0) {
                 /* const */ InventoryItem newItem = new(name);
-                DataBase.NewItemService.Create(newItem.Name, newItem.Quantity, newItem.Cost_basis);
+                DataBase.AddItemService.AddItem(newItem.Name, newItem.Quantity, newItem.Cost_basis);
                 return newItem;
             }
             else {
@@ -25,8 +25,8 @@ namespace Logic
         }
         private static float UpdateCostBasis(in float cost_basis, in int quantity, in float price)
         {
-            /* const */ float avg_cost = quantity/cost_basis;
-            /* const */ float total_cost = avg_cost+price;
+            /* const */ float current_cost = quantity*cost_basis;
+            /* const */ float total_cost = current_cost+price;
             /* const */ float updated_quantity = quantity+1;
             return total_cost/updated_quantity;
         }

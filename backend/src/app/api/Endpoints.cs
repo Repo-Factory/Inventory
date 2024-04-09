@@ -27,11 +27,11 @@ namespace Endpoints
         {
             const string dataEndpoint = "/sellProduct";
             const string endpointName = "SellProduct";
-            app.MapDelete(dataEndpoint, (string name) =>
+            app.MapDelete(dataEndpoint, (string name, float sale_price) =>
             {
                 try
                 {
-                    Logic.SellProductService.SellProduct(name);
+                    Logic.SellProductService.SellProduct(name, sale_price);
                     return Results.Ok();
                 }
                 catch (Exception ex)

@@ -2,9 +2,9 @@ using Npgsql;
 
 namespace DataBase
 {
-    class NewItemService
+    class AddItemService
     {
-        public static void Create(string name, int quantity, float cost_basis)
+        public static void AddItem(string name, int quantity, float cost_basis)
         {
             try
             {
