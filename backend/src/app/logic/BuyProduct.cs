@@ -1,8 +1,8 @@
 using InventoryItem = Models.Inventory.Item;
 
-namespace Sales 
+namespace Logic 
 {
-    class Operations
+    class BuyProductService
     {
         public static void BuyProduct(in string name, in float price)
         {
@@ -29,32 +29,6 @@ namespace Sales
             /* const */ float total_cost = avg_cost+price;
             /* const */ float updated_quantity = quantity+1;
             return total_cost/updated_quantity;
-        }
-
-        public static void SellProduct(in string name)
-        {
-            try
-            {
-                /* const */ List<InventoryItem> items = DataBase.GetItemService.GetItem(name);
-                /* const */ InventoryItem item = HandleNonExistentProduct(items, name);
-                /* const */ int quantity = item.Quantity;
-                DataBase.UpdateItemService.Update(name, quantity, item.Cost_basis);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-        private static InventoryItem HandleNonExistentProduct(in List<InventoryItem> items, in string name)
-        {
-            if (items.Count == 0)
-            {
-                throw new InvalidOperationException($"No item with name '{name}' exists.");
-            }
-            else
-            {
-                return items[0];
-            }
         }
     }
 }
