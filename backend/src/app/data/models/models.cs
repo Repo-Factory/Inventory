@@ -2,7 +2,7 @@ namespace Models
 {
     public class Inventory
     {
-        public class Item(string name, int quantity = 0, float cost_basis = 0.0f)
+        public class Item(string name, int quantity = 0, float cost_basis = 0.00001f)
         {
             public string Name { get; set; } = name;
             public int Quantity { get; set; } = quantity;
