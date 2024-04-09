@@ -2,35 +2,18 @@ namespace Models
 {
     public class Inventory
     {
-        public class InventoryItem
+        public class Item(string name, int quantity = 0, float cost_basis = 0.0f)
         {
-            public required int Id { get; set; }
-            public required string Name { get; set; }
-            public required int Quantity { get; set; }
-            public required float Cost_basis { get; set; }
-            public required float Sell_price { get; set; }
+            public string Name { get; set; } = name;
+            public int Quantity { get; set; } = quantity;
+            public float Cost_basis { get; set; } = cost_basis;
+        }
+        public class Sale(string name, DateTime timestamp, float sell_price)
+        {
+            public string Name { get; set; } = name;
+            public DateTime Timestamp { get; set; } = timestamp;
+            public float Sell_price { get; set; } = sell_price;
         }
 
-        public enum InventoryItemOptions
-        {
-            Id = 0,
-            Name = 1,
-            Quantity = 2,
-            Cost_basis = 3,
-            Sell_price = 4
-        }
-
-        public class Sale
-        {
-            public required string Name { get; set; }
-            public required DateTime Timestamp { get; set; }
-            public required float Sell_price { get; set; }
-        }
-        public enum SaleOptions
-        {
-            Name = 0,
-            DateTime = 1,
-            Sell_price = 2
-        }
     }
 }

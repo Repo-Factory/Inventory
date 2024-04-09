@@ -1,17 +1,16 @@
 GRANT ALL PRIVILEGES ON DATABASE docker_postgres TO docker_postgres;
 
 CREATE TABLE inventory (
-  id          serial PRIMARY KEY,
-  name        VARCHAR(20),
-  cost_basis  DECIMAL(10, 2),
-  sell_price  DECIMAL(10, 2),
-  quantity    INT
+  Id          serial PRIMARY KEY,
+  Name        VARCHAR(20),
+  Cost_basis  DECIMAL(10, 2),
+  Quantity    INT
 );
 
 CREATE TABLE sales (
-  id          serial PRIMARY KEY,
-  name        VARCHAR(20),
-  time        DATETIME,
-  sell_price  DECIMAL(10,2)
+  Id          serial PRIMARY KEY,
+  Name        VARCHAR(20),
+  Time        DATETIME,
+  Sell_price  DECIMAL(10,2)
 );
 

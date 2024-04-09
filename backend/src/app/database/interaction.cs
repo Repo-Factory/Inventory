@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using InventoryItem = Models.Inventory.Item;
 
 namespace DataBase
 {
@@ -8,7 +9,7 @@ namespace DataBase
         {
             try 
             {
-                SqlConnection connection = Connect(); connection.Open();
+                using SqlConnection connection = Connect(); connection.Open();
                 using SqlCommand command = new(query, connection);
                 command.ExecuteNonQuery();
             }
@@ -17,23 +18,30 @@ namespace DataBase
                 Console.WriteLine(e.ToString());
             }
         }
-        public static List<Models.Inventory.InventoryItem> Read(in string query)
+        public static List<InventoryItem> Read(in string query)
         {
-            try 
+            List<InventoryItem> items = [];
+            try
             {
-                SqlConnection connection = Connect(); connection.Open();
+                using SqlConnection connection = Connect();
+                connection.Open();
                 using SqlCommand command = new(query, connection);
-                using SqlDataReader reader =  command.ExecuteReader();
+                using SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    
+                    InventoryItem item = new(reader.GetString(reader.GetOrdinal("Name")))
+                    {
+                        Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                        Cost_basis = reader.GetFloat(reader.GetOrdinal("Cost_basis"))
+                    };
+                    items.Add(item);
                 }
             }
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
-                return ;
             }
+            return items;
         }
         private static SqlConnection Connect()
         {
