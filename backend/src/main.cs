@@ -18,7 +18,8 @@ void setupHttpPipeline(WebApplication app)
 
 void setupEndpoints(WebApplication app)
 {
-    Endpoints.Expose.IntegerEndpoint(app);
+    Endpoints.Expose.BuyProduct(app);
+    Endpoints.Expose.SellProduct(app);
 }
 
 void startServer(string[] args)
@@ -29,4 +30,4 @@ void startServer(string[] args)
     app.Run();
 }
 
-startServer(new string[] {});
+startServer([]);

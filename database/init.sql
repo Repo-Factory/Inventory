@@ -10,7 +10,7 @@ CREATE TABLE inventory (
 CREATE TABLE sales (
   Id          serial PRIMARY KEY,
   Name        VARCHAR(20),
-  Time        DATETIME,
+  Time        TIMESTAMP,
   Sell_price  DECIMAL(10,2)
 );
 

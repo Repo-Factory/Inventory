@@ -6,9 +6,9 @@ namespace Endpoints
         {
             const string dataEndpoint = "/buyProduct";
             const string endpointName = "BuyProduct";
-            app.MapGet(dataEndpoint, (in string name) =>
+            app.MapPost(dataEndpoint, (string name, float cost_basis) =>
             {
-                Sales.Operations.BuyProduct(name, 0);
+                Sales.Operations.BuyProduct(name, cost_basis);
             })
             .WithName(endpointName)
             .WithOpenApi();
@@ -18,7 +18,7 @@ namespace Endpoints
         {
             const string dataEndpoint = "/sellProduct";
             const string endpointName = "SellProduct";
-            app.MapGet(dataEndpoint, (in string name) =>
+            app.MapDelete(dataEndpoint, (string name) =>
             {
                 Sales.Operations.SellProduct(name);
             })
