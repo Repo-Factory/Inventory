@@ -1,0 +1,5 @@
+FROM postgres:latest as database_stage
+ENV POSTGRES_USER docker_postgres
+ENV POSTGRES_PASSWORD docker_postgres
+ENV POSTGRES_DB docker_postgres
+RUN hostname docker_postgres

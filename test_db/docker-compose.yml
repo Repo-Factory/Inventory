@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  docker_postgres:
+    image: postgres
+    container_name: docker_postgres
+    build:
+      context: ./
+      target: docker_postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker_postgres
+      - POSTGRES_PASSWORD=docker_postgres
+      - POSTGRES_DB=docker_postgres
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
