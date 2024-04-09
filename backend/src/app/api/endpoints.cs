@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace Endpoints
 {
     public class Expose
@@ -8,7 +10,16 @@ namespace Endpoints
             const string endpointName = "BuyProduct";
             app.MapPost(dataEndpoint, (string name, float cost_basis) =>
             {
-                Sales.Operations.BuyProduct(name, cost_basis);
+                try
+                {
+                    Sales.Operations.BuyProduct(name, cost_basis);
+                    return Results.Ok();
+                }
+                catch (Exception ex)
+                {
+                    Console.Write($"An error occurred while processing the request {ex}.");
+                    return Results.StatusCode(StatusCodes.Status500InternalServerError);
+                }
             })
             .WithName(endpointName)
             .WithOpenApi();
@@ -20,7 +31,16 @@ namespace Endpoints
             const string endpointName = "SellProduct";
             app.MapDelete(dataEndpoint, (string name) =>
             {
-                Sales.Operations.SellProduct(name);
+                try
+                {
+                    Sales.Operations.SellProduct(name);
+                    return Results.Ok();
+                }
+                catch (Exception ex)
+                {
+                    Console.Write($"An error occurred while processing the request {ex}.");
+                    return Results.StatusCode(StatusCodes.Status500InternalServerError);
+                }
             })
             .WithName(endpointName)
             .WithOpenApi();
@@ -45,5 +65,21 @@ namespace Endpoints
             .WithOpenApi();
         }
 
+        public static void IntegerEndpoint(WebApplication app)
+        {
+            const string dataEndpoint = "/integer";
+            const string endpointName = "/GetInteger";
+            app.MapGet(dataEndpoint, (int number) =>
+            {
+                return Enumerable.Range(1, 5).Select(index =>
+                    new BigInteger
+                    (
+                        number
+                    ))
+                    .ToArray();
+            })
+            .WithName(endpointName)
+            .WithOpenApi();
+        }
     }
 }
