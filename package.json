@@ -6,6 +6,7 @@
     {
       "start": "sudo docker-compose up --build",
       "detach": "sudo docker-compose up --build -d",
+      "clean": "sudo docker rm $(sudo docker ps -qa)",
       "stop" : "sudo docker-compose stop"
     }
   }
