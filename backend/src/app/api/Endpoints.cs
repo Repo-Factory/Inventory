@@ -48,11 +48,11 @@ namespace Endpoints
         {
             const string dataEndpoint = "/getStats";
             const string endpointName = "GetStats";
-            app.MapDelete(dataEndpoint, (DateTime before, DateTime after) =>
+            app.MapGet(dataEndpoint, (DateTime before, DateTime after) =>
             {
                 try
                 {
-                    Logic.SellProductService.SellProduct(before, after);
+                    Logic.GetStatsService.GetStats(before, after);
                     return Results.Ok();
                 }
                 catch (Exception ex)

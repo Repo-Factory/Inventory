@@ -45,7 +45,7 @@ namespace DataBase
             return new(
                 reader.GetString(reader.GetOrdinal("name")),
                 reader.GetDateTime(reader.GetOrdinal("time")),
-                reader.GetFloat(reader.GetOrdinal("sale_price"))
+                reader.GetFloat(reader.GetOrdinal("sell_price"))
             );
         }
     }

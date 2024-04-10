@@ -20,6 +20,7 @@ void setupEndpoints(WebApplication app)
 {
     Endpoints.Expose.BuyProduct(app);
     Endpoints.Expose.SellProduct(app);
+    Endpoints.Expose.GetStats(app);
 }
 
 void startServer(string[] args)

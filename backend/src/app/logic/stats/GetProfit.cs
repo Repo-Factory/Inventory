@@ -11,7 +11,7 @@ namespace Statistics
                 total_profit += sales[i].profit;
                 total_revenue += sales[i].revenue;
             }
-            float total_margin = total_revenue/total_profit;
+            float total_margin = total_profit/total_revenue;
             return new SalesStats(total_revenue, total_profit, total_margin);
         }
     }
