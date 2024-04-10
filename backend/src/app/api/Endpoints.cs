@@ -43,5 +43,26 @@ namespace Endpoints
             .WithName(endpointName)
             .WithOpenApi();
         }
+
+        public static void GetStats(WebApplication app)
+        {
+            const string dataEndpoint = "/getStats";
+            const string endpointName = "GetStats";
+            app.MapDelete(dataEndpoint, (DateTime before, DateTime after) =>
+            {
+                try
+                {
+                    Logic.SellProductService.SellProduct(before, after);
+                    return Results.Ok();
+                }
+                catch (Exception ex)
+                {
+                    Console.Write($"An error occurred while processing the request {ex}.");
+                    return Results.StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            })
+            .WithName(endpointName)
+            .WithOpenApi();
+        }
     }
 }

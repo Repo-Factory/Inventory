@@ -8,12 +8,11 @@ namespace Models
             public int Quantity { get; set; } = quantity;
             public float Cost_basis { get; set; } = cost_basis;
         }
-        public class Sale(string name, DateTime timestamp, float sell_price)
+        public class Sale(string name, DateTime timestamp, float sale_price)
         {
             public string Name { get; set; } = name;
             public DateTime Timestamp { get; set; } = timestamp;
-            public float Sell_price { get; set; } = sell_price;
+            public float Sale_price { get; set; } = sale_price;
         }
-
     }
 }

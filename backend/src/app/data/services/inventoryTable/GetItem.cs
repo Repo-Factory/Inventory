@@ -37,7 +37,7 @@ namespace DataBase
         }
         private static void AddParameters(NpgsqlCommand command, string name)
         {
-            command.Parameters.AddWithValue("@Name", name);
+            command.Parameters.AddWithValue("@name", name);
         }
         private static InventoryItem BuildItem(NpgsqlDataReader reader)
         {

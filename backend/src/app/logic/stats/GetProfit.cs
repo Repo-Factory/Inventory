@@ -1,27 +1,18 @@
 namespace Statistics
 {
-    public class Product
-    {
-        public static float CalculateProfit(in float sell_price, in float buy_price)
-        {
-            return sell_price - buy_price;
-        }
-    
-        public static float CalculateMargin(in float sell_price, in float buy_price)
-        {
-            return sell_price/buy_price - 1;
-        }
-    }
     public class Totals
     {
-        public static float CalculateProfit(in float[] sell_price, in float[] cost_basis)
+        public static SalesStats CalculateStats(in List<SalesStats> sales)
         {
-            float profit = 0;
-            for (int i = 0; i < sell_price.Length; i++)
+            float total_profit = 0;
+            float total_revenue = 0;
+            for (int i = 0; i < sales.Count; i++)
             {
-                profit += sell_price[i] - cost_basis[i];
+                total_profit += sales[i].profit;
+                total_revenue += sales[i].revenue;
             }
-            return profit;
+            float total_margin = total_revenue/total_profit;
+            return new SalesStats(total_revenue, total_profit, total_margin);
         }
     }
 }
