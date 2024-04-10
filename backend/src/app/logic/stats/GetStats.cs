@@ -1,21 +1,26 @@
-using System.Data;
 using Sale = Models.Inventory.Sale;
-using Stats = Statistics.SalesStats;
+using Earnings = Statistics.SalesStats;
 
 namespace Logic 
 {
-    class GetStatsService
+    class Stats(in int quantity_sold, in int quantity_left, in Earnings earnings)
+    {
+        public int quantity_sold = quantity_sold;
+        public int quantity_left = quantity_left;
+        public Earnings earnings = earnings;
+    } 
+    public class GetStatsService
     {
         public static void GetStats(in DateTime before, in DateTime after)
         {
             /* const */ List<Sale> sales = DataBase.GetSalesService.GetSales(before, after);
-            List<List<Sale>> groupedSales = GroupSales(sales);
-            Dictionary<string, Stats> stats = CalculateStatsForGroup(groupedSales);
+            /* const */ List<List<Sale>> groupedSales = GroupSalesByName(sales);
+            /* const */ Dictionary<string, Stats> stats = CalculateStatsForAllGroups(groupedSales);
+            /* const */ Earnings totals = CalculateTotals(stats);
             DisplayStats(stats, before, after);
-            Stats totals = CalculateTotals(stats);
-            DisplayTotals(totals, before, after);
+            DisplayTotals(totals);
         }
-        private static List<List<Sale>> GroupSales(in List<Sale> sales)
+        private static List<List<Sale>> GroupSalesByName(in List<Sale> sales)
         {
             var groupedSales = new Dictionary<string, List<Sale>>();
             foreach (var sale in sales)
@@ -29,35 +34,48 @@ namespace Logic
             }
             return [.. groupedSales.Values];
         }
-        private static Dictionary<string, Stats> CalculateStatsForGroup(in List<List<Sale>> groupedSales)
+        private static Dictionary<string, Stats> CalculateStatsForAllGroups(in List<List<Sale>> groupedSales)
         {
             Dictionary<string, Stats> itemBreakdown = [];
             foreach (List<Sale> groupedSale in groupedSales)
             {
-                List<Stats> stats = GetListOfStatsForGroup(groupedSale);
-                itemBreakdown.Add(groupedSale[0].Name, Statistics.Totals.CalculateStats(stats));
+                string product_name = groupedSale[0].Name;
+                List<Earnings> earnings = GetListOfStatsForGroup(groupedSale);
+                int quantity_sold = GetQuantitySold(groupedSale);
+                int quantity_left = DataBase.GetItemService.GetItem(product_name)[0].Quantity;
+                Stats stats = new(quantity_sold, quantity_left, Statistics.Totals.CalculateStats(earnings));
+                itemBreakdown.Add(product_name, stats);
             }
             return itemBreakdown;
         }
-        private static List<Stats> GetListOfStatsForGroup(in List<Sale> groupedSale)
+        private static int GetQuantitySold(in List<Sale> groupedSale)
         {
-            List<Stats> stats = [];
+            int i = 0;
+            foreach (Sale sale in groupedSale)
+            {
+                i++;
+            }
+            return i;
+        }
+        private static List<Earnings> GetListOfStatsForGroup(in List<Sale> groupedSale)
+        {
+            List<Earnings> stats = [];
             Dictionary<string, float> costs = GetCostsService.GetCosts();
             foreach (Sale sale in groupedSale)
             {
                 float sell_price = sale.Sale_price;
                 float buy_price = costs[sale.Name];
-                Stats stat = new(sell_price, buy_price);
+                Earnings stat = new(sell_price, buy_price);
                 stats.Add(stat);
             }
             return stats;
         }
-        private static Stats CalculateTotals(in Dictionary<string, Stats> named_stats)
+        private static Earnings CalculateTotals(in Dictionary<string, Stats> named_stats)
         {
-            List<Stats> stats = [];
+            List<Earnings> stats = [];
             foreach (var stat in named_stats)
             {
-                stats.Add(stat.Value);
+                stats.Add(stat.Value.earnings);
             }
             return Statistics.Totals.CalculateStats(stats);
         }
@@ -68,16 +86,16 @@ namespace Logic
             Console.WriteLine($"****************************************************"); Console.WriteLine();
             foreach (var (name, stat) in stats)
             {
-                Console.WriteLine($"Con el producto {name} pesos");
+                Console.WriteLine($"Con el producto {name} vendiste {stat.quantity_sold} - te quedan {stat.quantity_left}");
                 Console.WriteLine($"----------------------------");
-                Console.WriteLine($"Vendiste {stat.revenue} pesos");
-                Console.WriteLine($"Ganaste {stat.profit} pesos");
-                Console.WriteLine($"Tu margen promedio sale a {stat.margin:P1}");
+                Console.WriteLine($"Se ingresaron {stat.earnings.revenue} pesos");
+                Console.WriteLine($"Ganaste {stat.earnings.profit} pesos");
+                Console.WriteLine($"Tu margen promedio sale a {stat.earnings.margin:P1}");
                 Console.WriteLine($"----------------------------");
                 Console.WriteLine();
             }
         }
-        private static void DisplayTotals(in Stats totals, in DateTime before, in DateTime after)
+        private static void DisplayTotals(in Earnings totals)
         {
             Console.WriteLine($"************************ TOTALES ****************************");
             
