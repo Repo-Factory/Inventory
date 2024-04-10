@@ -35,12 +35,12 @@ namespace DataBase
                         WHERE time < @before AND time > @after;"
                     ;
         }
-        private static void AddParameters(NpgsqlCommand command, DateTime before, DateTime after)
+        private static void AddParameters(in NpgsqlCommand command, in DateTime before, in DateTime after)
         {
             command.Parameters.AddWithValue("@before", before);
             command.Parameters.AddWithValue("@after", after);
         }
-        private static Sale BuildSale(NpgsqlDataReader reader)
+        private static Sale BuildSale(in NpgsqlDataReader reader)
         {
             return new(
                 reader.GetString(reader.GetOrdinal("name")),
